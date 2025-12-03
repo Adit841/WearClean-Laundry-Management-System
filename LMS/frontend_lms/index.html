@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LaundryMate - Professional Laundry Services</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="container">
+        <a href="#" onclick="showPage('home')" class="logo"><i class="fas fa-tshirt"></i> Wear Clean</a>
+
+        <button class="mobile-menu" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#" onclick="showPage('home')" class="nav-link active">Home</a></li>
+          <li><a href="#" onclick="showPage('services')" class="nav-link">Services</a></li>
+          <li><a href="#" onclick="showPage('order')" class="nav-link">Place Order</a></li>
+          <li><a href="#" onclick="showPage('track')" class="nav-link">Track Order</a></li>
+          <li><a href="#" onclick="showPage('admin')" class="nav-link">Admin</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    
+    <div id="home" class="page">
+      <section class="hero">
+        <div class="container">
+          <h1>Professional Laundry Services</h1>
+          <p>
+            Experience the convenience of premium laundry care with pickup and delivery right to your doorstep. We make
+            your clothes look and feel their best!
+          </p>
+          <button class="cta-button" onclick="showPage('order')"><i class="fas fa-calendar-plus"></i> Book Now</button>
+        </div>
+      </section>
+
+      <section class="services">
+        <div class="container">
+          <h2 class="section-title">Our Services</h2>
+          <div class="services-grid" id="homeServicesGrid">
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="services" class="page hidden">
+      <div class="container">
+        <h1 class="section-title" style="margin-top: 2rem">Our Laundry Services</h1>
+        <div class="services-grid" id="servicesGrid">
+        </div>
+      </div>
+    </div>
+
+    <div id="order" class="page hidden">
+      <div class="container">
+        <h1 class="section-title" style="margin-top: 2rem">Place Your Order</h1>
+        <div id="orderAlert"></div>
+
+        <form class="form-container" id="orderForm">
+          <h3 style="margin-bottom: 1.5rem; color: #2c3e50">Select Services</h3>
+          <div id="serviceSelection">
+          </div>
+
+          <div class="form-group">
+            <label for="clothesPhoto">Photo of Clothes (optional)</label>
+            <input
+              type="file"
+              id="clothesPhoto"
+              name="clothesPhoto"
+              accept="image/*"
+              capture="environment"
+              onchange="previewClothesPhoto(event)"
+            />
+            <div id="clothesPhotoPreview" style="margin-top: 1rem"></div>
+          </div>
+
+          <h3 style="margin-top: 2rem; margin-bottom: 1.5rem; color: #2c3e50">Customer Details</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="customerName">Full Name *</label>
+              <input type="text" id="customerName" name="customerName" required />
+            </div>
+            <div class="form-group">
+              <label for="customerPhone">Phone Number *</label>
+              <input type="tel" id="customerPhone" name="customerPhone" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="customerAddress">Pickup Address *</label>
+            <textarea id="customerAddress" name="customerAddress" rows="3" required></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pickupDate">Pickup Date *</label>
+              <input type="date" id="pickupDate" name="pickupDate" required />
+            </div>
+            <div class="form-group">
+              <label for="deliveryDate">Delivery Date *</label>
+              <input type="date" id="deliveryDate" name="deliveryDate" required />
+            </div>
+          </div>
+
+          <div class="order-summary">
+            <h3 style="margin-bottom: 1rem; color: #2c3e50">Order Summary</h3>
+            <div id="orderSummary">
+              <p>No services selected</p>
+            </div>
+            <div id="totalAmount" style="font-size: 1.2rem; font-weight: 600; color: #e67e22; margin-top: 1rem">
+              Total: ₹0
+            </div>
+          </div>
+
+          <button type="submit" class="cta-button" style="width: 100%; margin-top: 1rem">
+            <i class="fas fa-shopping-cart"></i> Place Order
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div id="track" class="page hidden">
+      <div class="container">
+        <h1 class="section-title" style="margin-top: 2rem">Track Your Order</h1>
+
+        <div class="form-container">
+          <div class="form-group">
+            <label for="trackOrderId">Order ID</label>
+            <input type="text" id="trackOrderId" placeholder="Enter your Order ID" />
+          </div>
+          <div class="form-group">
+            <label for="trackPhone">Phone Number</label>
+            <input type="tel" id="trackPhone" placeholder="Enter registered phone number" />
+          </div>
+          <button class="cta-button" onclick="trackOrder()"><i class="fas fa-search"></i> Track Order</button>
+        </div>
+
+        <div id="trackingResult"></div>
+      </div>
+    </div>
+
+    <div id="admin" class="page hidden">
+      <div class="container admin-container">
+        <h1 class="section-title" style="margin-top: 2rem">Admin Dashboard</h1>
+
+        <div id="adminLogin" class="form-container">
+          <h3 style="margin-bottom: 1.5rem; color: #2c3e50">Admin Login</h3>
+          <div class="form-group">
+            <label for="adminUsername">Username</label>
+            <input type="text" id="adminUsername" placeholder="Enter username" />
+          </div>
+          <div class="form-group">
+            <label for="adminPassword">Password</label>
+            <input type="password" id="adminPassword" placeholder="Enter password" />
+          </div>
+          <button class="cta-button" onclick="adminLogin()"><i class="fas fa-sign-in-alt"></i> Login</button>
+          <div class="alert alert-info" style="margin-top: 1rem">
+            <strong>Demo Credentials:</strong> Username: admin, Password: admin123
+          </div>
+        </div>
+
+        <div id="adminDashboard" class="hidden">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem">
+            <h3 style="color: #2c3e50">All Orders</h3>
+            <button class="btn-small" onclick="adminLogout()" style="background: #e74c3c">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+          </div>
+
+          <div class="orders-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Services</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody">
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2025 Wear Clean. All rights reserved. | Professional Laundry Services</p>
+      </div>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>
